@@ -1,0 +1,48 @@
+	body {
+	  background-color:black;
+	  background-size: 100% 100%;
+	  min-height: 100%;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-position: center center;
+	  background-attachment: fixed;
+	  background-size: cover;
+	}
+	.form-group {
+	margin:2px;
+	}
+	.cube {
+	position:absolute;
+	z-index:1;
+	text-align:center;
+	cursor:pointer;
+	}
+	th:hover {
+		cursor:pointer;
+	}
+	.cursor {
+		cursor:pointer;
+	}
+	.cursor:hover {
+		text-decoration: underline;
+	}
+	.table {
+		table-layout: fixed;
+		word-wrap: break-word;
+	}
+	.cube:hover {
+	background-color:rgba(0,222,0,0.3);
+	}
+	.badge {
+		vertical-align: middle;
+		padding:8px;
+		border-radius:15px;
+		background-color:#B98E89;
+	}
+	.badge-holder {
+		width: 100%;
+		height: 100%;
+		margin-top:5px;
+		text-align: center;
+	}

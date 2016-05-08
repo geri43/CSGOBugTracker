@@ -1,0 +1,52 @@
+body {
+font-size:15px;
+}
+form {
+margin:0px;
+}
+.alert {
+	margin-bottom:5px;
+}
+.panel-default>.panel-body .badge {
+	background-color:#333;
+}
+.panel-primary > .panel-heading a{
+	color:white;
+}
+.panel-body {
+padding:3px;
+}
+.panel-heading {
+	padding:3px;
+}
+.panel
+.information {
+cursor: help;
+border-bottom: 1px dotted #777;
+}
+.bold {
+	font-weight: bold;
+}
+.well-sm {
+	margin:4px !important;
+	padding:4px;
+	text-align: center;
+}
+.navbar-brand
+{
+	margin-top:-7px;
+}
+.navbar-default {
+	border: none;
+}
+#custom-bootstrap-menu.navbar-default {
+    font-size: 15px;
+    background-color: rgba(41, 173, 94, 1);
+	border-bottom-right-radius: 0;
+}
+#custom-bootstrap-menu.navbar-default .navbar-nav>li>a {
+    color: white;
+}
+.mrg {
+margin:7px;
+}
