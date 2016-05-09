@@ -8,7 +8,7 @@ include_once("config.php");
 <title>CS:GO Bug Tracker</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="A website designed to keep track of all the known bugs of CS:GO maps">
+<meta name="description" content="A website designed to keep track of bugs in CS:GO maps">
 <meta name="keywords" content="csgo,bug,tracker">
 <meta name="author" content="CS:GO Bug Tracker">
 <script src="js/jquery-1.11.2.min.js"></script>
@@ -54,6 +54,9 @@ echo "
 				<?php
 				if ($rank>1) {
 				?>
+				<li id="statistics_menu">
+				<a href='statistics.php'>Statistics</a>
+				</li>
 				<li id="admin_menu">
 				<a href='admin.php'>Admin panel</a>
 				</li>
@@ -61,7 +64,7 @@ echo "
 				}
 				?>
 				<li>
-				<a href='https://www.reddit.com/r/CSGOBugTracker/' title='Reddit Page' target='_blank'><img src='images/ico_reddit.png' alt='Reddit' width='16' height='16'></a>
+				<a href='https://www.reddit.com/r/CSGOBugTracker/' title='Reddit Page' target='_blank'>Do you want your map to be added? <img src='images/ico_reddit.png' alt='Reddit' width='16' height='16'></a>
 				</li>
 				<li>
 				<a href='https://github.com/geri43/CSGOBugTracker' title='Github Page' target='_blank'><img src='images/ico_github.png' alt='Github' width='16' height='16'></a>
