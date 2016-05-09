@@ -8,6 +8,10 @@ if(!isset($_SESSION))
 	}
 }
 require ('openid.php');
+function logoutbutton() {
+	global $user_data,$rank_array;
+    echo "<form action=\"steamauth/logout.php\" method=\"post\">Logged in as: ".$user_data["steam_persona"]." (".$rank_array[$user_data["rank"]].") <button type='submit' value='Logout' class='btn btn-default mrg' />Logout</button></form>"; //logout button
+}
 function steamlogin()
 {
 try {

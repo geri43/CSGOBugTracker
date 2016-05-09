@@ -7,7 +7,7 @@ if (isset($_GET["map"])) {
 	$map_id = "1";
 }
 $get_map = mysqli_query($connection,"SELECT * FROM maps WHERE id='$map_id'");
-$map = array();
+$map = array("name"=>"Not found");
 $buglist = array();
 $history = array();
 // Get bug list

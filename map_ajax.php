@@ -1,5 +1,8 @@
 <?php
 include_once("config.php");
+$allowed_urls = array("youtube.com","imgur.com","i.imgur.com","gfycat.com");
+$seconds_between_reports = ($user_data["rank"]>0)?0:10;
+
 function eligibleToEdit($connection,$profile,$map_id,$need_priv,$rank) {
 	if ($rank>1 || ($need_priv==0 && $rank>0)) {
 		return true;
@@ -92,10 +95,10 @@ if ($logged) {
 			}
 			else if (isset($_POST["description"]) && isset($_POST["type"]) && isset($_POST["media"]) && isset($_POST["map"]) && isset($_POST["coords"])) {
 				$success = false;
-				$spam = $time - 10;
+				$spam = $time - $seconds_between_reports;
 				$getmsg = mysqli_fetch_array(mysqli_query($connection,"SELECT COUNT(*) as count FROM bugs WHERE user_id = '$profile' AND register_date > '$spam'"));
 				if ($getmsg["count"] > 0) {
-					$message = "You are sending bug reports too fast. Please wait 10 seconds between each report.";
+					$message = "You are sending bug reports too fast. Please wait $seconds_between_reports seconds between each report.";
 				}
 				else {
 					// Desc check
@@ -115,8 +118,8 @@ if ($logged) {
 							} else {
 								$parsed = parse_url($url);
 								$host = preg_replace('#^www\.(.+\.)#i', '$1', $parsed['host']);
-								if (!($host == "youtube.com" || $host=="imgur.com" || $host=="i.imgur.com" || $host=="gfycat.com")) {
-									$message = "We only allow URLs from youtube.com, imgur.com or gfycat.com. (Yours: $host)";
+								if (!(in_array($host, $allowed_urls))) {
+									$message = "We only allow URLs from ".implode(",",$allowed_urls).". (Yours: $host)";
 								} else {
 									// Map check
 									$map_id = intval($_POST["map"]);

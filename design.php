@@ -51,6 +51,15 @@ echo "
             <ul class="nav navbar-nav navbar-left">
 				<li id="index_menu"><a href="index.php">Map bugs</a>
                 </li>
+				<?php
+				if ($rank>1) {
+				?>
+				<li id="admin_menu">
+				<a href='admin.php'>Admin panel</a>
+				</li>
+				<?php
+				}
+				?>
 				<li>
 				<a href='https://www.reddit.com/r/CSGOBugTracker/' title='Reddit Page' target='_blank'><img src='images/ico_reddit.png' alt='Reddit' width='16' height='16'></a>
 				</li>
