@@ -25,8 +25,6 @@
 			$avatar_short = substr($_SESSION['steam_avatar'], 69, 43);
 			if ($avatar_short!=$user_data["steam_avatar"] || $_SESSION['steam_personaname'] != $user_data["steam_persona"]) {
 				mysqli_query($connection,"UPDATE users SET steam_persona = '$_SESSION[steam_personaname]',steam_avatar='$avatar_short' WHERE user_id = '$profile' LIMIT 1");
-				$user_data["steam_avatar"]=$avatar_short;
-				$user_data["steam_persona"]=$_SESSION["steam_personaname"];
 			}
 		}
     }
