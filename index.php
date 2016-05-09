@@ -13,7 +13,7 @@ $history = array();
 // Get bug list
 if (mysqli_num_rows($get_map)==1) {
 	$map = mysqli_fetch_array($get_map);
-	$get_buglist = mysqli_query($connection,"SELECT id,bugs.user_id,coords,type,state,register_date,resolve_date,description,media,priority,steam_persona,steam_avatar,steam_id FROM bugs JOIN users ON users.user_id=bugs.user_id WHERE map_id='$map[id]' ORDER BY register_date DESC");
+	$get_buglist = mysqli_query($connection,"SELECT id,bugs.user_id,ban,coords,type,state,register_date,resolve_date,description,media,priority,steam_persona,steam_avatar,steam_id FROM bugs JOIN users ON users.user_id=bugs.user_id WHERE map_id='$map[id]' AND ban=0 ORDER BY register_date DESC");
 	if (mysqli_num_rows($get_buglist)>0) {
 		while ($r=mysqli_fetch_assoc($get_buglist)) {
 			$buglist[] = $r;
