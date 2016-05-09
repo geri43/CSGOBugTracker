@@ -38,7 +38,7 @@ function setStateBug(bug_id,_state) {
 						if (histories[bug_id]==undefined) {
 						histories[bug_id] = [];
 						}
-						histories[bug_id].push({"id":0,"steam_persona":user_steam_persona,"steam_avatar":user_steam_avatar,"steam_id":user_steam_id,"action":"set_state","message":_state,"time":new Date().getTime(),"bug_id":bug_id});
+						histories[bug_id].push({"id":0,"steam_persona":user_steam_persona,"steam_avatar":user_steam_avatar,"steam_id":user_steam_id,"action":"set_state","message":_state,"time":new Date().getTime()/1000,"bug_id":bug_id});
 						break;
 					}
 				}
