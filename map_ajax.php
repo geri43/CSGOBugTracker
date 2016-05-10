@@ -35,6 +35,7 @@ if ($logged) {
 							if (mysqli_affected_rows($connection)==0) {
 								$message = "This bug is already set to ".$state_array[$state].".";
 							} else {
+								mysqli_query($connection,"INSERT INTO mod_log (mod_user_id,action,message,time,bug_id) VALUES ('$profile','set_state','$state','$time','$bug_id')");
 								$success = true;
 								$message = "Bug marked as ".$state_array[$state].".";
 							}
