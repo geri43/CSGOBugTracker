@@ -2,14 +2,14 @@
 var types = ["Wallbang","Nade","Texture","Model","Sound","Material","Navmesh","Pixelwalking","Stuck bomb","Boost","Bomb plant","Skybox","Door","Brush","Other"];
 var types_tooltip = ["Inconsistent wallbang","Bugged nade interaction","Texture glitch, wrong scale etc.","Model (cars,boxes,pipes...) issues: draw distance,hitbox etc.",
 "Ambient sound, walls blocking sound, etc.","Texture/Model incorrect material (e.g metal catwalk - dirt sound)","Bot navigation problem","Walking on invisible ledges",
-"A spot where a dropped bomb becomes inaccessible","Unintented boosts","Bugged bomb-plant interaction","Skybox related issues","Bugged door interaction","Invisible walls","Not listed bug type"]  
+"A spot where a dropped bomb becomes inaccessible","Unintented boosts","Bugged bomb-plant interaction","Skybox related issues","Bugged door interaction","Invisible walls, bad clipping.","Not listed bug type"]  
 var states = ["Unconfirmed","Confirmed","Fixed","Removed"];
 var actions = {"set_state":"set state to","comment":"commented"};
 // Basic functions
-function steamProfileIcon(steam_avatar,steam_persona,steam_id) {
-	return "<a href='http://steamcommunity.com/profiles/"+steam_id+
-					"' target='_blank'><img src='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/"+steam_avatar+
-					".jpg'>"+steam_persona+
+function steamProfileIcon(array) {
+	return "<a href='http://steamcommunity.com/profiles/"+array["steam_id"]+
+					"' target='_blank'><img src='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/"+array["steam_avatar"]+
+					".jpg'>"+array["steam_persona"]+
 					"</a>";
 }
 function showMessage(success,msg) {
@@ -38,11 +38,11 @@ function setStateBug(bug_id,_state) {
 						if (histories[bug_id]==undefined) {
 						histories[bug_id] = [];
 						}
-						histories[bug_id].push({"id":0,"steam_persona":user_steam_persona,"steam_avatar":user_steam_avatar,"steam_id":user_steam_id,"action":"set_state","message":_state,"time":new Date().getTime()/1000,"bug_id":bug_id});
+						histories[bug_id].unshift({"id":0,"steam_persona":user_steam_persona,"steam_avatar":user_steam_avatar,"steam_id":user_steam_id,"action":"set_state","message":_state,"time":new Date().getTime()/1000,"bug_id":bug_id});
 						break;
 					}
 				}
-				displayBugs($( "#filter_type" ).val());
+				displayBugs();
 				show(selected_coords);
 			}
 		}
@@ -65,7 +65,7 @@ function postBug(map_id) {
 				if (obj.success) {
 					media = "<a href='"+post_media+"' target='_blank'>"+post_media+"</a>";
 					buglist.unshift(JSON.parse(obj.get));
-					displayBugs($( "#filter_type" ).val());
+					displayBugs();
 					show(selected_coords);
 				}
 			}
@@ -87,7 +87,7 @@ function addComment(id) {
 					if (histories[id]==undefined) {
 					histories[id] = [];
 					}
-					histories[id].push({"steam_persona":user_steam_persona,"steam_avatar":user_steam_avatar,"steam_id":user_steam_id,"action":"comment","message":comment,"time":new Date().getTime()/1000,"bug_id":id});
+					histories[id].unshift({"steam_persona":user_steam_persona,"steam_avatar":user_steam_avatar,"steam_id":user_steam_id,"action":"comment","message":comment,"time":new Date().getTime()/1000,"bug_id":id});
 					toggleHistory(id);
 				}
 			}
@@ -98,24 +98,25 @@ function addComment(id) {
 function showBugStates(_state,id) {
 	var string = "";
 	if (rank>0) {
-		if (_state==0) {
-			string+=" <span title='Set Confirmed' class='cursor' onclick='setStateBug("+id+",1)'>✔</span><span title='Set Removed' class='cursor' onclick='setStateBug("+id+",3)'>✘</span>";
+		string+="<select data-id='"+id+"' class='modifyChanger form-control'><option value='-1'>Modify:</option>";
+		for (_i=0;_i<states.length;_i++) {
+			if (_state!=_i) {
+				string+="<option value='"+_i+"'>"+states[_i]+"</option>";
+			}
 		}
-		else if (_state==1) {
-			string+=" <span title='Set Fixed' class='cursor' onclick='setStateBug("+id+",2)'>✘</span>";
-		}
+		string+="</select>";
 	}
 	return string;
 }
-function showBugActions(id) {
+function showBugActions(id,array_idx) {
 	var string="";
-	string+="<span class='cursor' onclick='toggleHistory("+id+")'>Show history</span>";
+	string+="<span class='cursor' onclick='toggleHistory("+id+","+array_idx+")'>Show history</span>";
 	if (rank>0) {
 		string+="<br><span class='cursor' onclick='addComment("+id+")'>Add comment</span>";
 	}
 	return string;
 }
-function toggleHistory(id) {
+function toggleHistory(id,array_idx) {
 	if ($("#history_"+id).html()==undefined) {
 		var string = "<table class='table'>";
 		if (histories[id]!=undefined) {
@@ -126,13 +127,13 @@ function toggleHistory(id) {
 			if (cur_hist["action"]=="set_state") {
 			cur_message = states[cur_message];
 			}
-			string+="<tr><td>"+steamProfileIcon(cur_hist["steam_avatar"],cur_hist["steam_persona"],cur_hist["steam_id"])+" "+actions[cur_hist["action"]]+" <b>"+cur_message+"</b> on "+cur_date.toLocaleDateString()+" "+cur_date.toLocaleTimeString()+"</td></tr>";
+			string+="<tr><td>"+steamProfileIcon(cur_hist)+" "+actions[cur_hist["action"]]+" <b>"+cur_message+"</b> on "+cur_date.toLocaleDateString()+" "+cur_date.toLocaleTimeString()+"</td></tr>";
 			}
-		} else {
-			string+="<tr><td>No history</td></tr>";
 		}
+		var post_date = new Date(bugs[array_idx]["register_date"]*1000);
+		string+="<tr><td>"+steamProfileIcon(bugs[array_idx])+" posted this bug report on "+post_date.toLocaleDateString()+" "+post_date.toLocaleTimeString()+"</td></tr>";
 		string += "</table>";
-		$("#row_"+id).after("<tr id=history_"+id+"><td colspan=6>"+string+"</td></tr>");
+		$("#row_"+id).after("<tr class=history-table id=history_"+id+"><td colspan=6>"+string+"</td></tr>");
 	} else {
 		$("#history_"+id).remove();
 	}
@@ -140,15 +141,21 @@ function toggleHistory(id) {
 // Modal display functions
 function show(id) {
 	if (id!=selected_coords) {
-	$( ".dynamicboxes" ).hide();
+		$( ".dynamicboxes" ).hide();
 	}
 	selected_coords = id;
+	bugs = [];
 	if (id!=-1) {
-	bugs = coord_bugs[id];
-	$("#post_area").show();
-	} else {
-	bugs = buglist;
-	$("#post_area").hide();
+		bugs = coord_bugs[id];
+		$("#post_area").show();
+	} 
+	else {
+		for (i=0;i<buglist.length;i++) {
+			if (bugAllowed(buglist[i])) {
+				bugs.push(buglist[i]);
+			}
+		}
+		$("#post_area").hide();
 	}
 	$("#bug-table-body").html("");
 	if (bugs==undefined) {
@@ -159,9 +166,9 @@ function show(id) {
 			type = types[bug["type"]];
 			description = bug["description"];
 			media = "<a href='"+bug["media"]+"' target='_blank'>"+bug["media"]+"</a>";
-			user = steamProfileIcon(bug["steam_avatar"],bug["steam_persona"],bug["steam_id"]);
+			user = steamProfileIcon(bug);
 			state = states[bug["state"]];
-			$("#bug-table-body").append("<tr id='row_"+bug["id"]+"'><td>"+type+" issue</td><td><div title='Click to display more' style='height:60px; overflow:hidden; cursor:pointer;' onclick=\"$(this).css('overflow','');$(this).css('height','');\">"+description+"</div></td><td><div style='height:60px; overflow:hidden'>"+media+"</div></td><td>"+state+""+showBugStates(bug["state"],bug["id"])+"</td><td>"+user+"</td><td>"+showBugActions(bug["id"])+"</td></tr>");
+			$("#bug-table-body").append("<tr id='row_"+bug["id"]+"'><td>"+type+" issue</td><td><div title='Click to display more' style='height:60px; overflow:hidden; cursor:pointer;' onclick=\"$(this).css('overflow','');$(this).css('height','');\">"+description+"</div></td><td><div style='height:60px; overflow:hidden'>"+media+"</div></td><td>"+state+""+showBugStates(bug["state"],bug["id"])+"</td><td>"+user+"</td><td>"+showBugActions(bug["id"],i)+"</td></tr>");
 		}
 		$.bootstrapSortable();
 	}
@@ -179,21 +186,37 @@ function pushBug(bug) {
 		coord_bugs[bug["coords"]].push(bug);
 		$("#"+bug["coords"]).append("<div class='badge-holder'><span class='badge' id='"+bug["coords"]+"_has'>1</span></div>");
 	}
+	if (bug["state"]==3) {
+		$("#"+bug["coords"]+"_has").css("background-color","#E64607");
+	} else if (bug["state"]==2) {
+		$("#"+bug["coords"]+"_has").css("background-color","#81C456");
+	}
+	else if (bug["state"]==0) {
+		$("#"+bug["coords"]+"_has").css("background-color","#E69A07");
+	}
 }
-function displayBugs(filter_type) {
+function displayBugs() {
 	$(".badge-holder").remove();
 	for (var i=0;i<buglist.length;i++) {
 		bug = buglist[i];
+		if (bugAllowed(bug)) {
+			pushBug(bug);
+		}
+	}
+}
+function bugAllowed(_bug) {
 		allow = true;
+		filter_type = $( "#filter_type" ).val();
+		filter_state = $( "#filter_state" ).val();
 		if (filter_type!=undefined) {
-			if (filter_type.indexOf(bug["type"])==-1) {
+			if (filter_type.indexOf(_bug["type"])==-1) {
 				allow=false;
 			}
 		}
-		if (allow) {
-			if (bug["state"]<2) {
-				pushBug(bug);
+		if (filter_state!=undefined && allow) {
+			if (filter_state.indexOf(_bug["state"])==-1) {
+				allow=false;
 			}
 		}
-	}
+		return allow;
 }

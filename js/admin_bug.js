@@ -1,11 +1,13 @@
 function editMap() {
 	var sure = confirm("Modifying width, height, grid size will misplace all current bugs on the map. Are you sure?");
 	if (sure) {
+		disabled=$("#mapForm").find(':input:disabled').removeAttr('disabled');
 		$.ajax({
 			url: 'admin_ajax.php?edit',
 			type: 'POST',
 			data: $("#mapForm").serialize(),
 			success:function(result){
+				disabled.attr('disabled','disabled');
 				obj = JSON.parse(result);
 				showMessage(obj.success,obj.msg);
 			}
@@ -13,11 +15,13 @@ function editMap() {
 	}
 }
 function newMap() {
+	disabled=$("#mapForm").find(':input:disabled').removeAttr('disabled');
 	$.ajax({
 		url: 'admin_ajax.php?modify',
 		type: 'POST',
 		data: $("#mapForm").serialize(),
 		success:function(result){
+			disabled.attr('disabled','disabled');
 			obj = JSON.parse(result);
 			showMessage(obj.success,obj.msg);
 		}

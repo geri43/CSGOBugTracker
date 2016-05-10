@@ -32,9 +32,10 @@ while ($r=mysqli_fetch_assoc($get_map_mods)) {
 							<label for="select_map">Select map:</label>
 							<select class='form-control' id="select_map">
 								<option value='-1'>Select a map</option>
-							</select><br>
+							</select>
+							<button type='button' class='btn btn-primary' onclick='$("#map_fields").show()'>Or add new</button><br>
 							<div class='form-group' id='map_fields' style='display:none;'>
-							Id :<input class='form-control' name="map_id" disabled='disabled' value='-1' id="map_id"><br>
+							Id :<input title='Automatically managed, no need to edit.' class='form-control' name="map_id" disabled='disabled' value='-' id="map_id"><br>
 							<label for="map_name">Map name</label>
 							<input name="map_name" id='map_name' class='form-control' value=''><br>
 							<label for="image_path">Image path</label>

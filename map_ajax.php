@@ -30,27 +30,14 @@ if ($logged) {
 					if (!eligibleToEdit($connection,$profile,$bug_data["map_id"],$privilege_to_mod,$user_data["rank"])) {
 						$message = "This map can be only edited by privileged moderators.";
 					} else {
-						if ($state==1) {
-							mysqli_query($connection,"UPDATE bugs SET state=1 WHERE state=0 AND id='$bug_id'");
-							mysqli_query($connection,"INSERT INTO mod_log (mod_user_id,action,message,time,bug_id) VALUES ('$profile','set_state','1','$time','$bug_id')");
-							$response = "confirmed";
-						}
-						else if ($state==3) {
-							mysqli_query($connection,"UPDATE bugs SET state=3 WHERE state=0 AND id='$bug_id'");
-							mysqli_query($connection,"INSERT INTO mod_log (mod_user_id,action,message,time,bug_id) VALUES ('$profile','set_state','3','$time','$bug_id')");
-							$response = "removed";
-						}
-						else if ($state==2) {
-							// Resolve_date is a bit pointless, because we now have full moderation history table
-							mysqli_query($connection,"UPDATE bugs SET state=2,resolve_date='$time' WHERE state=1 AND id='$bug_id'");
-							mysqli_query($connection,"INSERT INTO mod_log (mod_user_id,action,message,time,bug_id) VALUES ('$profile','set_state','2','$time','$bug_id')");
-							$response = "marked as fixed";
-						} else {
-							$valid = false;
-						}
-						if ($valid) {
-							$success = true;
-							$message = "Bug $response.";
+						if ($state<=count($state_array) && $state>=0) {
+							mysqli_query($connection,"UPDATE bugs SET state='$state' WHERE state!='$state' AND id='$bug_id'");
+							if (mysqli_affected_rows($connection)==0) {
+								$message = "This bug is already set to ".$state_array[$state].".";
+							} else {
+								$success = true;
+								$message = "Bug marked as ".$state_array[$state].".";
+							}
 						}
 					}
 				}
@@ -136,7 +123,7 @@ if ($logged) {
 											$success = true;
 											mysqli_query($connection,"INSERT INTO `bugs` (user_id,coords,map_id,type,register_date,description,media) VALUES ('$profile','$coords','$map_id','$type','$time','$desc','$url')") or die(mysql_error());
 											$id = mysqli_insert_id($connection);
-											$r = mysqli_query($connection,"SELECT id,bugs.user_id,coords,type,state,register_date,resolve_date,description,media,priority,steam_persona,steam_avatar,steam_id FROM bugs JOIN users ON users.user_id=bugs.user_id WHERE id='$id'");
+											$r = mysqli_query($connection,"SELECT id,bugs.user_id,coords,type,state,register_date,description,media,priority,steam_persona,steam_avatar,steam_id FROM bugs JOIN users ON users.user_id=bugs.user_id WHERE id='$id'");
 											while ($s=mysqli_fetch_assoc($r)) {
 												$get = $s;
 											}

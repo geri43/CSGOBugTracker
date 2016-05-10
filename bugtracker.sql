@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2016 at 01:19 AM
+-- Generation Time: May 10, 2016 at 08:34 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.5.28
 
@@ -34,11 +34,10 @@ CREATE TABLE IF NOT EXISTS `bugs` (
   `type` tinyint(2) unsigned NOT NULL,
   `state` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `register_date` int(11) unsigned NOT NULL,
-  `resolve_date` int(11) unsigned NOT NULL DEFAULT '0',
   `description` varchar(500) NOT NULL,
   `media` varchar(255) NOT NULL,
   `priority` tinyint(1) unsigned NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -93,6 +92,13 @@ CREATE TABLE IF NOT EXISTS `media` (
   `link` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `media`
+--
+
+INSERT INTO `media` (`bug_id`, `type`, `link`) VALUES
+(1, 1, '1');
+
 -- --------------------------------------------------------
 
 --
@@ -106,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `mod_log` (
   `message` varchar(3000) NOT NULL,
   `time` int(11) NOT NULL,
   `bug_id` int(10) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -123,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_action` int(11) unsigned NOT NULL,
   `ban` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `fixed_name` tinyint(1) unsigned NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=198 DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -158,7 +164,8 @@ ALTER TABLE `mod_log`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
-  ADD KEY `steam_id` (`steam_id`);
+  ADD KEY `steam_id` (`steam_id`),
+  ADD KEY `ban` (`ban`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -173,7 +180,7 @@ ALTER TABLE `bugs`
 -- AUTO_INCREMENT for table `maps`
 --
 ALTER TABLE `maps`
-  MODIFY `id` int(5) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+  MODIFY `id` int(5) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `mod_log`
 --

@@ -9,8 +9,9 @@ $connection = mysqli_connect($mysql["server"], $mysql["user"], $mysql["password"
 $time = time();
 $site_title = "CS:GO Bug Tracker";
 $rank_array = ["User","Moderator","Admin"];
+$state_array = ["Unconfirmed","Confirmed","Fixed","Removed"];
 $profile = -1;
-$admin_panel_enabled = false;
+$admin_panel_enabled = true;
 $logged = false;
 
 if(!$connection) {

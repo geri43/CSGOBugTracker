@@ -51,12 +51,15 @@ echo "
             <ul class="nav navbar-nav navbar-left">
 				<li id="index_menu"><a href="index.php">Map bugs</a>
                 </li>
-				<?php
-				if ($rank>1) {
-				?>
 				<li id="statistics_menu">
 				<a href='statistics.php'>Statistics</a>
 				</li>
+				<li id="moderators_menu">
+				<a href='moderators.php'>Moderators</a>
+				</li>
+				<?php
+				if ($rank>1) {
+				?>
 				<li id="admin_menu">
 				<a href='admin.php'>Admin panel</a>
 				</li>

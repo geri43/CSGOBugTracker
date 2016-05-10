@@ -88,7 +88,7 @@ if ($logged && $user_data["rank"]>1 && $admin_panel_enabled) {
 } else {
 	$json = array(
 			'success' => false,
-			'msg' => "The admin panel is disabled. Enable it in the config file. (It's suggested to disable it after you are done.)"
+			'msg' => "The admin panel is disabled. Enable it in the config file. (If you leave it enabled, make sure other's can't access your Steam account, therefore this website's admin panel.)"
 	);
 	echo json_encode($json);
 }

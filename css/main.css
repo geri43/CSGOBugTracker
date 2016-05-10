@@ -1,5 +1,4 @@
 	body {
-	  background-color:black;
 	  background-size: 100% 100%;
 	  min-height: 100%;
 	  -webkit-background-size: cover;
@@ -9,6 +8,9 @@
 	  background-attachment: fixed;
 	  background-size: cover;
 	}
+	.modifyChanger option:first-child {
+		color:gray;
+	}
 	.form-group {
 	margin:2px;
 	}
@@ -17,9 +19,6 @@
 	z-index:1;
 	text-align:center;
 	cursor:pointer;
-	}
-	th:hover {
-		cursor:pointer;
 	}
 	.cursor {
 		cursor:pointer;
