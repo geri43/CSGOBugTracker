@@ -100,7 +100,7 @@ if ($logged) {
 						$type = intval($_POST["type"]);
 						if ($type>=0 && $type<=14) {
 							// Media check
-							$url = htmlspecialchars(mysqli_real_escape_string($connection,$_POST["media"]));
+							$url = mysqli_real_escape_string($connection,$_POST["media"]);
 							if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
 								$message = "Not a valid url.";
 							} else {
